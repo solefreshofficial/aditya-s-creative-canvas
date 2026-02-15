@@ -1,76 +1,116 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { useRef, useState } from "react";
 
 const projects = [
   {
     title: "Brand Identity Design",
     category: "Graphic Design",
-    color: "from-primary/20 to-primary/5",
+    icon: "🎨",
+    season: "Spring",
+    seasonIcon: "🌸",
+    desc: "Complete visual identity for a local startup",
+    reward: "+150 XP",
   },
   {
     title: "Documentary Edit",
     category: "Video Editing",
-    color: "from-accent/20 to-accent/5",
+    icon: "🎬",
+    season: "Summer",
+    seasonIcon: "☀️",
+    desc: "Nature documentary with cinematic color grading",
+    reward: "+200 XP",
   },
   {
     title: "E-Commerce Website",
     category: "Web Development",
-    color: "from-primary/20 to-primary/5",
+    icon: "💻",
+    season: "Fall",
+    seasonIcon: "🍂",
+    desc: "Full-stack online shop with cart & checkout",
+    reward: "+250 XP",
   },
   {
-    title: "Data Visualization Tool",
+    title: "Data Viz Dashboard",
     category: "Python",
-    color: "from-accent/20 to-accent/5",
+    icon: "🐍",
+    season: "Winter",
+    seasonIcon: "❄️",
+    desc: "Interactive data analysis & visualization tool",
+    reward: "+180 XP",
   },
 ];
 
 const WorkSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [selectedProject, setSelectedProject] = useState<number | null>(null);
 
   return (
-    <section id="work" className="py-32 px-6">
-      <div ref={ref} className="max-w-7xl mx-auto">
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          className="text-primary text-sm font-body uppercase tracking-[0.3em]"
-        >
-          Selected Work
-        </motion.span>
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
+    <section id="work" className="py-24 px-6">
+      <div ref={ref} className="max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="font-display text-4xl md:text-5xl font-bold mt-4 mb-16"
+          className="flex items-center gap-2 mb-8"
         >
-          Featured <span className="text-gradient-accent">Projects</span>
-        </motion.h2>
+          <span className="text-2xl">🎒</span>
+          <h2 className="font-pixel text-sm md:text-base text-foreground text-shadow-pixel">Quest Log</h2>
+        </motion.div>
 
-        <div className="space-y-4">
+        <div className="grid md:grid-cols-2 gap-4">
           {projects.map((project, i) => (
-            <motion.a
+            <motion.div
               key={project.title}
-              href="#"
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 + i * 0.1 }}
-              className="group flex items-center justify-between p-6 md:p-8 rounded-xl border border-border hover:border-glow bg-card transition-all duration-500 hover:glow-accent"
+              transition={{ delay: 0.2 + i * 0.15 }}
+              onClick={() => setSelectedProject(selectedProject === i ? null : i)}
+              className="pixel-box p-5 cursor-pointer group"
             >
-              <div className="flex items-center gap-6">
-                <span className="font-display text-muted-foreground/30 text-2xl font-bold">
-                  {String(i + 1).padStart(2, "0")}
+              {/* Season tag */}
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-pixel text-[7px] text-muted-foreground flex items-center gap-1">
+                  {project.seasonIcon} {project.season}
                 </span>
-                <div>
-                  <h3 className="font-display text-xl md:text-2xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                <span className="font-pixel text-[7px] text-primary">✅ COMPLETE</span>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="inventory-slot w-14 h-14 flex-shrink-0">
+                  <motion.span
+                    whileHover={{ rotate: [0, -15, 15, 0] }}
+                    className="text-2xl"
+                  >
+                    {project.icon}
+                  </motion.span>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-pixel text-[10px] text-foreground group-hover:text-primary transition-colors">
                     {project.title}
                   </h3>
-                  <span className="font-body text-sm text-muted-foreground">{project.category}</span>
+                  <p className="font-game text-sm text-muted-foreground">{project.category}</p>
                 </div>
               </div>
-              <ArrowUpRight className="w-6 h-6 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
-            </motion.a>
+
+              {/* Expanded details */}
+              <motion.div
+                initial={false}
+                animate={{ height: selectedProject === i ? "auto" : 0, opacity: selectedProject === i ? 1 : 0 }}
+                className="overflow-hidden"
+              >
+                <div className="pt-3 mt-3 border-t border-border">
+                  <p className="font-game text-base text-foreground">{project.desc}</p>
+                  <div className="flex items-center justify-between mt-3">
+                    <span className="font-pixel text-[8px] text-golden">Reward: {project.reward}</span>
+                    <span className="font-pixel text-[8px] text-primary pixel-btn">View Quest →</span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {selectedProject !== i && (
+                <p className="font-pixel text-[7px] text-muted-foreground mt-3">Click to expand ▼</p>
+              )}
+            </motion.div>
           ))}
         </div>
       </div>

@@ -14,12 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-        body: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        pixel: ['"Press Start 2P"', 'monospace'],
+        game: ['"VT323"', 'monospace'],
       },
       colors: {
-        surface: "hsl(var(--surface))",
-        glow: "hsl(var(--glow))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -53,6 +51,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        sky: "hsl(var(--sky))",
+        golden: "hsl(var(--golden))",
+        earth: "hsl(var(--earth))",
+        wood: "hsl(var(--wood))",
+        leaf: "hsl(var(--leaf))",
+        water: "hsl(var(--water))",
+        berry: "hsl(var(--berry))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -78,15 +83,20 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "marquee": {
-          "0%": { transform: "translateX(0%)" },
-          "100%": { transform: "translateX(-50%)" },
+        "bounce-pixel": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-4px)" },
+        },
+        "sway": {
+          "0%, 100%": { transform: "rotate(-2deg)" },
+          "50%": { transform: "rotate(2deg)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "marquee": "marquee 20s linear infinite",
+        "bounce-pixel": "bounce-pixel 1s ease-in-out infinite",
+        "sway": "sway 3s ease-in-out infinite",
       },
     },
   },
